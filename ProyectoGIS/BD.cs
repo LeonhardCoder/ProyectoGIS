@@ -25,6 +25,8 @@ namespace ProyectoGIS
                 NpgsqlConnection conn = new NpgsqlConnection(connstring);
                 conn.Open();
                 // sql statement
+                string urlimgen;
+
 
                 string coord = String.Format("ST_SetSRID(ST_MakePoint({0} , {1}), 4326)",  lon.Replace(',','.'), lat.Replace(',','.'));
 
@@ -70,8 +72,8 @@ namespace ProyectoGIS
                             nombre,
                             Direccion,
                             aforo,
-                            lon,
-                            lat
+                            lon.Replace(',','.'),
+                            lat.Replace(',', '.')
                             );
 
                 // Execute command
@@ -134,10 +136,10 @@ namespace ProyectoGIS
                 NpgsqlConnection conn = new NpgsqlConnection(connstring);
                 conn.Open();
                 // sql statement 
-                string sql = "SELECT idbranch, name_branch , aforo ,CAST ( geom AS text), longitud, latitud FROM SUCURSAL"
+                string sql = "SELECT idbranch, name_branch , addres_branch, aforo ,CAST ( geom AS text), longitud, latitud FROM SUCURSAL"
                     + String.Format(" WHERE latitud = '{0}' AND longitud = '{1}'",
-                                         lat,
-                                         lon
+                                         lat.Replace(',','.'),
+                                         lon.Replace(',', '.')
                                          );
 
                 NpgsqlCommand cmd = new NpgsqlCommand(sql);
@@ -174,7 +176,7 @@ namespace ProyectoGIS
                 NpgsqlConnection conn = new NpgsqlConnection(connstring);
                 conn.Open();
                 // sql statement 
-                string sql = "SELECT SELECT idbranch, name_branch , aforo ,CAST ( geom AS text), longitud, latitud FROM SUCURSAL";
+                string sql = "SELECT  idbranch, name_branch , aforo ,CAST ( geom AS text), longitud, latitud FROM SUCURSAL";
 
                 NpgsqlCommand cmd = new NpgsqlCommand(sql);
                 cmd.AllResultTypesAreUnknown = true;

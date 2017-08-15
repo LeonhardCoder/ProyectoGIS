@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="Marlon Sánchez F.">
     <title>Visualizador Open Layer - WMS </title>
     <meta name="description" content="">
 
@@ -24,10 +23,18 @@
             margin: 0 !important;
             padding: 0 !important;
             width: 100%;
-            z-index: 0;
-            border-radius: 5px;
-            border-style:dotted;
+         
         }
+        titulo{
+		padding:5px;
+		text-align:center;
+		color: #3f51b5;
+		
+	  }
+	  
+	  body{
+		background-color:silver;
+	  }
     </style>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
@@ -43,7 +50,7 @@
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="Default.aspx">Ingreso de Datos</a></li>
-                <li class="active"><a href="Visualizador.aspx">OPEN LAYER VIEWER- WMS <span class="sr-only">(current)</a></li>
+                <li class="active"><a href="Visualizador.aspx">Visualizador de mapa <span class="sr-only">(current)</a></li>
             </ul>
         </div>
     </nav>
@@ -53,81 +60,64 @@
     </div>
     <div class="container">
         <div class="row">
+            <h1 class="titulo">Visualizador de mapas</h1>
+            <div>
+            </div>
+
+            <div style="clear: left"></div>
+            <hr>
             <div class="col-md-12">
                 <div id="map"></div>
                 <script>
-
-
                     var map = new ol.Map({
                         layers:
                             [new ol.layer.Group({
-                                'title': 'Base maps',
+                                'title': ' Mapa Base',
                                 layers: [
-                                    new ol.layer.Tile({
-                                        title: 'Water color',
-                                        type: 'base',
-                                        visible: false,
-                                        source: new ol.source.Stamen({
-                                            layer: 'watercolor'
-                                        })
-                                    }),
+
                                     new ol.layer.Tile({
                                         title: 'OSM',
                                         type: 'base',
-                                        visible: false,
+                                        visible: true,
                                         source: new ol.source.OSM()
                                     }),
                                     new ol.layer.Tile({
-                                        title: 'Satellite',
+                                        title: 'Google Mapa',
                                         type: 'base',
-                                        visible: true,
                                         visible: false,
-                                        source: new ol.source.MapQuest({ layer: 'sat' })
+                                        source: new ol.source.TileImage({ url: 'http://maps.google.com/maps/vt?pb=!1m5!1m4!1i{z}!2i{x}!3i{y}!4i256!2m3!1e0!2sm!3i375060738!3m9!2spl!3sUS!5e18!12m1!1e47!12m3!1e37!2m1!1ssmartmaps!4e0' })
+                                    }),
+                                    new ol.layer.Tile({
+                                        title: 'Google Satelite',
+                                        type: 'base',
+                                        visible: false,
+                                        source: new ol.source.TileImage({ url: 'http://khm0.googleapis.com/kh?v=717&hl=pl&&x={x}&y={y}&z={z}' })
                                     })
+
                                 ]
                             }),
                             new ol.layer.Group({
-                                title: 'Overlays',
+                                title: 'CapasDeber',
                                 layers: [
-                                    new ol.layer.Tile({
-                                        title: 'Ecuador',
-                                        source: new ol.source.TileWMS({
-                                            url: 'http://www.geoportaligm.gob.ec/nacional/wms?service=WMS&request=GetCapabilities',
-                                            params: { 'LAYERS': 'igm:Nacional' },
-                                            serverType: 'geoserver'
-                                        }),
-                                        visible: true
-                                    }),
-                                    new ol.layer.Tile({
-                                        title: 'Sucursales',
+
+                                   new ol.layer.Tile({
+                                        title: 'locales',
                                         source: new ol.source.TileWMS({
                                             url: 'http://localhost:8070/geoserver/uisrael_9noC/wms',
-                                            params: {
-                                                'LAYERS': 'uisrael_9noC:sucursal',
-                                              //  'VERSION': '1.1.0',
-                                               // 'FORMAT': 'image/png',
-                                               // 'TILED': true
-                                               // tilesOrigin: -1.45 + "," + -78.52
-                                            },
-                                            serverType: 'geoserver'
-                                        }),
-                                        visible: false
-                                    }),
-                                    new ol.layer.Tile({
-                                        title: 'Vias',
-                                        source: new ol.source.TileWMS({
-                                            url: 'http://www.geoportaligm.gob.ec/nacional/wms?service=WMS&request=GetCapabilities',
-                                            params: { 'LAYERS': 'vias' },
+                                            params: { 'LAYERS': 'uisrael_9noC:sucursal' },
                                             serverType: 'geoserver'
                                         }),
                                         visible: false
                                     })
+
+
+
                                 ]
                             })
                             ],
                         target: 'map',
                         view: new ol.View({
-                            center: ol.proj.transform([-78.52, -2], 'EPSG:4326', 'EPSG:3857'),
+                            center: ol.proj.transform([-78.45, -0.96], 'EPSG:4326', 'EPSG:3857'),
                             zoom: 7
                         })
                     });
